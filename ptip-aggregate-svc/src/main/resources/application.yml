@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: PTIP Aggregation Service
+  
+server:
+  port: 8080
+
+cloud:
+  aws:
+    region:
+      static: us-west-2
+    stack:
+      auto: false
