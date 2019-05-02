@@ -39,7 +39,7 @@ public class AtomFeedsResource {
 
     @GetMapping(path = "/feeds/{feedId}")
     @Timed(percentiles = {0.5, 0.75, 0.95, 0.98, 0.99, 0.999}, histogram = true)
-    public Feed getAtomFeed(@PathVariable String feedId) throws InterruptedException {
+    public Feed getAtomFeed(@PathVariable String feedId) {
         return atomFeedRepository.getFeed(feedId.toLowerCase());
     }
 

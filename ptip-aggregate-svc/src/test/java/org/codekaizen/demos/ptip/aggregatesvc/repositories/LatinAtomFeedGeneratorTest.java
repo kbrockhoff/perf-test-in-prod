@@ -26,6 +26,7 @@ package org.codekaizen.demos.ptip.aggregatesvc.repositories;
 import com.rometools.rome.feed.atom.Feed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.WireFeedOutput;
+import org.apache.commons.math3.distribution.ParetoDistribution;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ class LatinAtomFeedGeneratorTest {
     private final Logger logger = LoggerFactory.getLogger(LatinAtomFeedGeneratorTest.class);
 
     @Test
-    void shouldGenerateFeedForAnyId() throws FeedException, InterruptedException {
+    void shouldGenerateFeedForAnyId() throws FeedException {
         LatinAtomFeedGenerator generator = new LatinAtomFeedGenerator();
         generator.setBaseUrl("http://localhost:8082/feeds");
         Feed result = generator.getFeed("test");
@@ -45,6 +46,31 @@ class LatinAtomFeedGeneratorTest {
         logger.info("{}", formatter.outputString(result));
         assertEquals("Lorem Ipsum", result.getTitle());
         assertEquals(16, result.getEntries().size());
+    }
+
+    @Test
+    void shouldSpinThePrescribedAmountOfTime() {
+        LatinAtomFeedGenerator generator = new LatinAtomFeedGenerator();
+        generator.setBaseUrl("http://localhost:8082/feeds");
+        long specifiedNs = 120L * 1000000L;
+        long startTs = System.nanoTime();
+        generator.spin(specifiedNs / 1000000L);
+        long elapsed = System.nanoTime() - startTs;
+        logger.info("elpased time: {} ns", elapsed);
+        assertTrue(elapsed > specifiedNs - 5000000L && elapsed < specifiedNs + 5000000L);
+    }
+
+    @Test
+    void shouldCorrectlyUseParetoDistribution() {
+        ParetoDistribution paretoDistribution = new ParetoDistribution(20, 2.5);
+        logger.info("min {}", paretoDistribution.getSupportLowerBound());
+        logger.info("max {}", paretoDistribution.getSupportUpperBound());
+        logger.info("mean {}", paretoDistribution.getNumericalMean());
+        for (int i = 0; i < 16; i++) {
+            long sample = (long) paretoDistribution.sample();
+            logger.info("sample {}", sample);
+            assertTrue(sample >= 20L);
+        }
     }
 
 }

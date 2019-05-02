@@ -32,6 +32,7 @@ import com.rometools.rome.feed.atom.Person;
 import com.rometools.rome.feed.synd.SyndPerson;
 import com.thedeanda.lorem.Lorem;
 import com.thedeanda.lorem.LoremIpsum;
+import org.apache.commons.math3.distribution.ParetoDistribution;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 @Component
 public class LatinAtomFeedGenerator implements AtomFeedRepository {
@@ -52,7 +52,7 @@ public class LatinAtomFeedGenerator implements AtomFeedRepository {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FMT);
     private final Lorem lorem = LoremIpsum.getInstance();
-    private final Random random = new Random();
+    private final ParetoDistribution paretoDistribution = new ParetoDistribution(20.0, 2.5);
     @Value("${codekaizen.feeds.baseurl}")
     private String baseUrl;
 
@@ -61,7 +61,7 @@ public class LatinAtomFeedGenerator implements AtomFeedRepository {
     }
 
     @Override
-    public Feed getFeed(String feedId) throws InterruptedException {
+    public Feed getFeed(String feedId) {
         simulateRemoteCalls();
         Feed feed = new Feed();
         feed.setFeedType("atom_1.0");
@@ -84,9 +84,17 @@ public class LatinAtomFeedGenerator implements AtomFeedRepository {
         return feed;
     }
 
-    private void simulateRemoteCalls() throws InterruptedException {
-        long delay = 100L + (long) (50.0 * random.nextGaussian());
-        Thread.sleep(delay);
+    private void simulateRemoteCalls() {
+        long delay = 75L + (long) paretoDistribution.sample();
+        spin(delay);
+    }
+
+    void spin(long milliseconds) {
+        long sleepTime = milliseconds * 1000000L; // convert to nanoseconds
+        long startTime = System.nanoTime();
+        while ((System.nanoTime() - startTime) < sleepTime) {
+            System.getProperty("codekaizen.user");
+        }
     }
 
     private Entry generateEntry(String feedId, Instant when) {

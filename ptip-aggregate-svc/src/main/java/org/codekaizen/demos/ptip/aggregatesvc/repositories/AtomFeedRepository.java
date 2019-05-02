@@ -27,6 +27,6 @@ import com.rometools.rome.feed.atom.Feed;
 
 public interface AtomFeedRepository {
 
-    Feed getFeed(String feedId) throws InterruptedException;
+    Feed getFeed(String feedId);
 
 }
