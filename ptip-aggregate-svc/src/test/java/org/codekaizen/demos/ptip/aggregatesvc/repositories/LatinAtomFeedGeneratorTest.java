@@ -21,27 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.codekaizen.demos.ptip.aggregatesvc;
+package org.codekaizen.demos.ptip.aggregatesvc.repositories;
 
-import org.codekaizen.demos.ptip.aggregatesvc.repositories.AtomFeedRepository;
+import com.rometools.rome.feed.atom.Feed;
+import com.rometools.rome.io.FeedException;
+import com.rometools.rome.io.WireFeedOutput;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class PTiPAggregationServiceApplicationTests {
+class LatinAtomFeedGeneratorTest {
 
-	@Autowired
-	private AtomFeedRepository atomFeedRepository;
+    private final Logger logger = LoggerFactory.getLogger(LatinAtomFeedGeneratorTest.class);
 
-	@Test
-	public void contextLoads() {
-		assertNotNull(atomFeedRepository);
-	}
+    @Test
+    void shouldGenerateFeedForAnyId() throws FeedException, InterruptedException {
+        LatinAtomFeedGenerator generator = new LatinAtomFeedGenerator();
+        generator.setBaseUrl("http://localhost:8082/feeds");
+        Feed result = generator.getFeed("test");
+        WireFeedOutput formatter = new WireFeedOutput();
+        logger.info("{}", formatter.outputString(result));
+        assertEquals("Lorem Ipsum", result.getTitle());
+        assertEquals(16, result.getEntries().size());
+    }
 
 }

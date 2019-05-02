@@ -21,27 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.codekaizen.demos.ptip.aggregatesvc;
+package org.codekaizen.demos.ptip.aggregatesvc.resources;
 
-import org.codekaizen.demos.ptip.aggregatesvc.repositories.AtomFeedRepository;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+@RestController
+public class RootResource {
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class PTiPAggregationServiceApplicationTests {
-
-	@Autowired
-	private AtomFeedRepository atomFeedRepository;
-
-	@Test
-	public void contextLoads() {
-		assertNotNull(atomFeedRepository);
-	}
+    @GetMapping(path = "/", produces = "text/plain")
+    public String sayAbout() {
+        return "Performance Testing in Production Demo";
+    }
 
 }

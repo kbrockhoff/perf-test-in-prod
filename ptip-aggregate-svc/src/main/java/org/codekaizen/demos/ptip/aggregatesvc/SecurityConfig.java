@@ -23,25 +23,21 @@
  */
 package org.codekaizen.demos.ptip.aggregatesvc;
 
-import org.codekaizen.demos.ptip.aggregatesvc.repositories.AtomFeedRepository;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class PTiPAggregationServiceApplicationTests {
-
-	@Autowired
-	private AtomFeedRepository atomFeedRepository;
-
-	@Test
-	public void contextLoads() {
-		assertNotNull(atomFeedRepository);
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/**").permitAll()
+                .and().cors()
+                .and().csrf().disable();
+    }
 
 }

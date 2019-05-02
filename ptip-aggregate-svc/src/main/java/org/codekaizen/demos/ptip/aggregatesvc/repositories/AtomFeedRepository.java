@@ -21,27 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.codekaizen.demos.ptip.aggregatesvc;
+package org.codekaizen.demos.ptip.aggregatesvc.repositories;
 
-import org.codekaizen.demos.ptip.aggregatesvc.repositories.AtomFeedRepository;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import com.rometools.rome.feed.atom.Feed;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+public interface AtomFeedRepository {
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class PTiPAggregationServiceApplicationTests {
-
-	@Autowired
-	private AtomFeedRepository atomFeedRepository;
-
-	@Test
-	public void contextLoads() {
-		assertNotNull(atomFeedRepository);
-	}
+    Feed getFeed(String feedId) throws InterruptedException;
 
 }

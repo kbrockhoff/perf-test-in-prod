@@ -21,27 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.codekaizen.demos.ptip.aggregatesvc;
+package org.codekaizen.demos.ptip.aggregatesvc.resources;
 
+import com.rometools.rome.feed.atom.Feed;
+import io.micrometer.core.annotation.Timed;
 import org.codekaizen.demos.ptip.aggregatesvc.repositories.AtomFeedRepository;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+@RestController
+public class AtomFeedsResource {
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class PTiPAggregationServiceApplicationTests {
+    @Autowired
+    private AtomFeedRepository atomFeedRepository;
 
-	@Autowired
-	private AtomFeedRepository atomFeedRepository;
-
-	@Test
-	public void contextLoads() {
-		assertNotNull(atomFeedRepository);
-	}
+    @GetMapping(path = "/feeds/{feedId}")
+    @Timed(percentiles = {0.5, 0.75, 0.95, 0.98, 0.99, 0.999}, histogram = true)
+    public Feed getAtomFeed(@PathVariable String feedId) throws InterruptedException {
+        return atomFeedRepository.getFeed(feedId.toLowerCase());
+    }
 
 }

@@ -1,3 +1,9 @@
+logging:
+  level:
+    org.springframework.integration.support.MessageBuilder: WARN
+    org.springframework.boot: INFO
+    org.codekaizen.demos: INFO
+
 spring:
   application:
     name: PTIP Aggregation Service
@@ -5,9 +11,27 @@ spring:
 server:
   port: 8082
 
+management:
+  metrics:
+    #    distribution:
+    #      percentiles-histogram:
+    #        *: true
+    export:
+      prometheus:
+        enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+
 cloud:
   aws:
     region:
       static: us-west-2
     stack:
       auto: false
+
+codekaizen:
+  feeds:
+    baseurl: 'https://ptit-demo.kevinbrockhoff.me/feeds'
