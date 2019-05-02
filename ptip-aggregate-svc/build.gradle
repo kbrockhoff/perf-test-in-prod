@@ -1,12 +1,13 @@
 plugins {
 	id 'org.springframework.boot' version '2.1.4.RELEASE'
 	id 'java'
+	id 'com.palantir.docker' version '0.22.1'
 }
 
 apply plugin: 'io.spring.dependency-management'
 
 group = 'org.codekaizen.demos'
-version = '0.0.1-SNAPSHOT'
+version = '0.1.0-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
@@ -33,4 +34,10 @@ dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
+}
+
+docker {
+	name "hub.docker.com/kbrockhoff/${project.name}:${project.version}"
+	files tasks.jar.outputs
+    buildArgs(['JAR_FILE': "${project.name}-${project.version}.jar"])
 }
