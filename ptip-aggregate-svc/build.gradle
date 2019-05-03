@@ -65,7 +65,7 @@ test {
 }
 
 docker {
-	name "hub.docker.com/kbrockhoff/${project.name}:${project.version}"
+	name "kbrockhoff/${project.name}:${project.version}"
 	files tasks.bootJar.outputs
     buildArgs(['JAR_FILE': "${project.name}-${project.version}.jar"])
 }
