@@ -66,6 +66,7 @@ test {
 
 docker {
 	name "kbrockhoff/${project.name}:${project.version}"
+	tag 'Latest', "kbrockhoff/${project.name}:latest"
 	files tasks.bootJar.outputs
     buildArgs(['JAR_FILE': "${project.name}-${project.version}.jar"])
 }

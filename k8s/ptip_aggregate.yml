@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ptip-aggregate-deployment
+  labels:
+    app: ptip-aggregate-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ptip-aggregate-svc
+  template:
+    metadata:
+      labels:
+        app: ptip-aggregate-svc
+    spec:
+      containers:
+        - name: aggregate-svc
+          image: kbrockhoff/ptip-aggregate-svc:latest
+          ports:
+            - containerPort: 8082
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aggregate-svc
+  labels:
+    app: ptip-aggregate-svc
+spec:
+  selector:
+    app: ptip-aggregate-svc
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
