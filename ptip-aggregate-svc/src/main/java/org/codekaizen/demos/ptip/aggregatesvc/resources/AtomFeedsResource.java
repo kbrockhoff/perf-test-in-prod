@@ -31,13 +31,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AtomFeedsResource {
 
-    @Autowired
     private AtomFeedRepository atomFeedRepository;
 
     @GetMapping(path = "/feeds/{feedId}")
     @Timed(percentiles = {0.5, 0.75, 0.95, 0.98, 0.99, 0.999}, histogram = true)
     public Feed getAtomFeed(@PathVariable String feedId) {
         return atomFeedRepository.getFeed(feedId.toLowerCase());
+    }
+
+    @Autowired
+    public void setAtomFeedRepository(AtomFeedRepository atomFeedRepository) {
+        this.atomFeedRepository = atomFeedRepository;
     }
 
 }

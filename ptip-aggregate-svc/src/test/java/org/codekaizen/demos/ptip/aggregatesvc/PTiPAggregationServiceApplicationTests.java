@@ -31,13 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class PTiPAggregationServiceApplicationTests {
+class PTiPAggregationServiceApplicationTests {
 
 	@Autowired
 	private AtomFeedRepository atomFeedRepository;
 
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
 		assertNotNull(atomFeedRepository);
 	}
 
