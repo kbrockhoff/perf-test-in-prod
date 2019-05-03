@@ -1,0 +1,3 @@
+[submodule "jmeter-kubernetes"]
+	path = jmeter-kubernetes
+	url = https://github.com/kbrockhoff/jmeter-kubernetes.git
