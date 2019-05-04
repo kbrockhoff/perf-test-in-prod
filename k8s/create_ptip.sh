@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-if ! hash kubectl 2>/dev/null
-then
-    echo "'kubectl' was not found in PATH"
-    echo "Kindly ensure that you can acces an existing kubernetes cluster via kubectl"
-    exit
-fi
+. ./kubectl_check.sh
 
 WORKING_DIR=`pwd`
 TARGET_NS=ptip
