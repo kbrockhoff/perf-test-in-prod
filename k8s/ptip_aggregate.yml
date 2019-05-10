@@ -4,6 +4,10 @@ metadata:
   name: ptip-aggregate-deployment
   labels:
     app: ptip-aggregate-svc
+  annotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/path: /actuator/prometheus
+      prometheus.io/port: '8082'
 spec:
   replicas: 1
   selector:
@@ -30,8 +34,8 @@ metadata:
 spec:
   selector:
     app: ptip-aggregate-svc
+  type: NodePort
   ports:
     - protocol: TCP
       port: 8082
       targetPort: 8082
-  type: LoadBalancer

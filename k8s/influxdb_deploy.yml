@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb-metrics
+  labels:
+    app: influxdb-k8s
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb-metrics
+  template:
+    metadata:
+      labels:
+        app: influxdb-metrics
+    spec:
+      containers:
+        - image: influxdb
+          imagePullPolicy: IfNotPresent
+          name: influxdb
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/influxdb
+          ports:
+            - containerPort: 8083
+              name: influx
+            - containerPort: 8086
+              name: api
+            - containerPort: 2003
+              name: graphite
+      volumes:
+      - name: config-volume
+        configMap:
+         name: influxdb-metrics-config
