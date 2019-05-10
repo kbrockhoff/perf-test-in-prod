@@ -32,6 +32,10 @@ spec:
               mountPath: /etc/prometheus/
             - name: prometheus-storage-volume
               mountPath: /prometheus/
+      securityContext:
+        fsGroup: 2000
+        runAsNonRoot: true
+        runAsUser: 1000
       volumes:
         - name: prometheus-config-volume
           configMap:
@@ -39,4 +43,5 @@ spec:
             name: prometheus-server-conf
   
         - name: prometheus-storage-volume
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: prometheus-claim
