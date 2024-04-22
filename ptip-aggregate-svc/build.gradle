@@ -1,7 +1,9 @@
 plugins {
-	id 'org.springframework.boot' version '2.1.4.RELEASE'
-	id 'java'
-	id 'com.palantir.docker' version '0.22.1'
+    id 'org.springframework.boot' version '2.7.18'
+    id 'java'
+    id 'com.palantir.docker' version '0.36.0'
+    id 'org.openrewrite.rewrite' version '6.11.2'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -25,7 +27,8 @@ repositories {
 }
 
 ext {
-	springCloudVersion = 'Greenwich.SR1'
+	springCloudVersion = '2022.0.4'
+	springBootVersion = '2.7.18'
 }
 
 dependencies {
@@ -36,26 +39,26 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jetty'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws'
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
 	implementation 'org.springframework.retry:spring-retry'
 	implementation 'io.micrometer:micrometer-registry-prometheus'
-	implementation 'com.rometools:rome:1.12.0'
-	implementation 'com.thedeanda:lorem:2.1'
+	implementation 'com.rometools:rome:2.1.0'
+	implementation 'com.thedeanda:lorem:2.2'
 	implementation 'org.apache.commons:commons-math3:3.6.1'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation "org.junit.jupiter:junit-jupiter-api"
-	testImplementation "org.junit.jupiter:junit-jupiter-params"
-	testImplementation "org.junit.jupiter:junit-jupiter-engine"
-	testImplementation "org.mockito:mockito-core"
-	testImplementation "org.mockito:mockito-junit-jupiter"
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testImplementation 'org.junit.jupiter:junit-jupiter-params'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
 	testImplementation 'org.springframework.security:spring-security-test'
+	rewrite 'org.openrewrite.recipe:rewrite-spring:5.7.0'
 }
 
 dependencyManagement {
 	imports {
+		mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }
@@ -69,4 +72,8 @@ docker {
 	tag 'Latest', "kbrockhoff/${project.name}:latest"
 	files tasks.bootJar.outputs
     buildArgs(['JAR_FILE': "${project.name}-${project.version}.jar"])
+}
+
+rewrite {
+	activeRecipe("org.openrewrite.java.spring.boot2.UpgradeSpringBoot_2_7")
 }
