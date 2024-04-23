@@ -12,18 +12,11 @@ server:
   port: 8082
 
 management:
-  metrics:
-    #    distribution:
-    #      percentiles-histogram:
-    #        *: true
-    export:
-      prometheus:
-        enabled: true
-
   endpoints:
     web:
       exposure:
         include: health,info,prometheus,metrics
+  prometheus.metrics.export.enabled: true
 
 cloud:
   aws:

@@ -15,26 +15,30 @@
  */
 package org.codekaizen.demos.ptip.aggregatesvc;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * Configuration of Spring Security.
  *
  * @author kbrockhoff
  */
+@Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/actuator/**").permitAll()
-                .antMatchers("/**").permitAll()
-                .and().cors()
-                .and().csrf().disable();
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(requests -> requests
+                .requestMatchers("/login").permitAll()
+                .requestMatchers("/actuator/**").permitAll()
+                .requestMatchers("/**").permitAll()).cors(withDefaults()).csrf(csrf -> csrf.disable());
+        return http.build();
     }
 
 }
