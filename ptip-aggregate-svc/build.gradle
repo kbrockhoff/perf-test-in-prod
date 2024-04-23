@@ -10,7 +10,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'org.codekaizen.demos'
 version = '0.1.0-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 configurations {
 	compileOnly {
