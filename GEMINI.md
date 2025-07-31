@@ -12,7 +12,7 @@ performance can be tested and improved without having to stand up a test environ
 
 ## Technologies
 
-System under test is a Spring Boot app which returns a generated Atom feed of Lorem Ipsum with artifically
+System under test is a Spring Boot app which returns a generated Atom feed of Lorem Ipsum with artificially
 induced delays to simulate a microservices architecture. The system under test runs on a Kubernetes cluster
 with Prometheus collecting metrics backed by long-term storage provided by InfluxDB. A namespace with a
 Apache JMeter cluster with test results stored in InfluxDB is used to put load on the system.
