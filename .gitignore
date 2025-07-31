@@ -21,3 +21,15 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# IDE
+.vscode
+.idea
+
+# AI agent instructions
+.cursor
+.windsurf
+CLAUDE.md
+claude_desktop_config.json
+*.bak
+
