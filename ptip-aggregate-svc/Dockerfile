@@ -1,8 +1,6 @@
-FROM openjdk:11-jdk-slim-stretch
-
-VOLUME /tmp
+FROM eclipse-temurin:21-jre-jammy
+WORKDIR /app
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
-
 EXPOSE 8082
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
