@@ -9,7 +9,7 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 
 group = 'org.codekaizen.demos'
-version = '0.2.0'
+version = '0.3.0-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
